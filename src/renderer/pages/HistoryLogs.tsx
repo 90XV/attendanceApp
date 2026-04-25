@@ -65,7 +65,7 @@ const HistoryLogs = () => {
           <Search size={20} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
           <input 
             className="search-input"
-            style={{ paddingLeft: '3rem', width: '100%', borderRadius: '0.75rem', background: 'var(--bg-primary)', border: '1px solid var(--border)', color: 'white', padding: '0.75rem 0.75rem 0.75rem 3rem' }}
+            style={{ paddingLeft: '3rem', width: '100%', borderRadius: '12px', background: 'var(--bg-primary)', border: '1px solid transparent', color: 'var(--text-primary)', padding: '0.875rem 0.875rem 0.875rem 3rem' }}
             placeholder="Search by teacher name or nickname..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}

@@ -1,73 +1,32 @@
-# React + TypeScript + Vite
+# AttnLog - Staff Attendance Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AttnLog is a native desktop application designed for secure, fast, and reliable staff attendance tracking. Built with Electron, React, and Vite, it provides a seamless user experience tailored for administrative clerks to log teacher check-ins and check-outs using encrypted QR codes.
 
-Currently, two official plugins are available:
+## Features
+- **Modern UI/UX**: An Apple-inspired, accessible interface featuring Light and Dark modes.
+- **Secure QR Scanning**: Teachers are assigned unique QR codes encrypted with AES-256. 
+- **Local-First Database**: Runs on a lightning-fast local SQLite database (`better-sqlite3`), meaning no internet connection is required for day-to-day operations.
+- **Session Tracking**: Support for multiple login contexts (Morning In/Out, Afternoon In/Out, Unplanned, School Matter).
+- **Exporting**: Searchable history logs with CSV export capabilities.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech Stack
+- **Framework**: Electron (via `electron-vite`)
+- **Frontend**: React 19, TypeScript, Lucide Icons
+- **Backend/Storage**: Node.js, `better-sqlite3`, `crypto-js`
+- **Scanner Integration**: `html5-qrcode`
 
-## React Compiler
+## Development
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+To start the development server:
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+To build the production Windows installer:
+```bash
+npm run build
 ```
+
+## Security Note
+The application uses local encryption for QR codes. In a production environment, ensure that the secret keys in the source code are migrated to secure environment variables or a secure key management system.

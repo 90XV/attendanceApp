@@ -12,10 +12,7 @@ function createWindow() {
       nodeIntegration: false,
     },
     titleBarStyle: 'hidden',
-    titleBarOverlay: {
-      color: '#0f172a',
-      symbolColor: '#f8fafc',
-    },
+    titleBarOverlay: true,
   });
 
   if (process.env['ELECTRON_RENDERER_URL']) {

@@ -46,25 +46,30 @@ const StaffManagement = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (editingTeacher) {
-      await (window as any).electronAPI.invoke('update-teacher', editingTeacher.id, formData);
-    } else {
-      const qrData = JSON.stringify({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        nickname: formData.nickname,
-        timestamp: Date.now()
-      });
-      const encryptedData = CryptoJS.AES.encrypt(qrData, ENCRYPTION_KEY).toString();
+    try {
+      if (editingTeacher) {
+        await (window as any).electronAPI.invoke('update-teacher', editingTeacher.id, formData);
+      } else {
+        const qrData = JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          nickname: formData.nickname,
+          timestamp: Date.now()
+        });
+        const encryptedData = CryptoJS.AES.encrypt(qrData, ENCRYPTION_KEY).toString();
+        
+        await (window as any).electronAPI.invoke('add-teacher', {
+          ...formData,
+          qrCode: encryptedData
+        });
+      }
       
-      await (window as any).electronAPI.invoke('add-teacher', {
-        ...formData,
-        qrCode: encryptedData
-      });
+      setIsModalOpen(false);
+      fetchTeachers();
+    } catch (err: any) {
+      alert("Failed to save teacher: " + err.message);
+      console.error(err);
     }
-    
-    setIsModalOpen(false);
-    fetchTeachers();
   };
 
   const handleDelete = async (id: number) => {
@@ -142,7 +147,7 @@ const StaffManagement = () => {
       {isModalOpen && (
         <div style={{ 
           position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, 
-          background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', 
+          background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', 
           justifyContent: 'center', zIndex: 100 
         }}>
           <div className="card" style={{ width: '100%', maxWidth: '500px' }}>
@@ -196,7 +201,7 @@ const StaffManagement = () => {
       {qrCodeUrl && (
         <div style={{ 
           position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, 
-          background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', 
+          background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', 
           justifyContent: 'center', zIndex: 100 
         }}>
           <div className="card" style={{ width: '100%', maxWidth: '400px', textAlign: 'center' }}>

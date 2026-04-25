@@ -52,26 +52,26 @@ const Dashboard = () => {
 
       <h2>Quick Actions</h2>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginTop: '1.5rem' }}>
-        <Link to="/scan" className="card nav-item" style={{ height: 'auto', padding: '2rem', textAlign: 'center', flexDirection: 'column', gap: '1rem' }}>
+        <Link to="/scan" className="card nav-item" style={{ height: 'auto', padding: '2rem', textAlign: 'center', flexDirection: 'column', gap: '1rem', border: 'none' }}>
           <Camera size={48} style={{ color: 'var(--accent)' }} />
           <div>
-            <div style={{ fontWeight: 700, color: 'white' }}>Start Scanning</div>
+            <div style={{ fontWeight: 600, fontSize: '1.125rem' }}>Start Scanning</div>
             <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Log teacher attendance</div>
           </div>
         </Link>
 
-        <Link to="/staff" className="card nav-item" style={{ height: 'auto', padding: '2rem', textAlign: 'center', flexDirection: 'column', gap: '1rem' }}>
-          <Users size={48} style={{ color: '#a855f7' }} />
+        <Link to="/staff" className="card nav-item" style={{ height: 'auto', padding: '2rem', textAlign: 'center', flexDirection: 'column', gap: '1rem', border: 'none' }}>
+          <Users size={48} style={{ color: '#AF52DE' }} />
           <div>
-            <div style={{ fontWeight: 700, color: 'white' }}>Manage Staff</div>
+            <div style={{ fontWeight: 600, fontSize: '1.125rem' }}>Manage Staff</div>
             <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Add or edit teachers</div>
           </div>
         </Link>
 
-        <Link to="/history" className="card nav-item" style={{ height: 'auto', padding: '2rem', textAlign: 'center', flexDirection: 'column', gap: '1rem' }}>
-          <History size={48} style={{ color: '#f59e0b' }} />
+        <Link to="/history" className="card nav-item" style={{ height: 'auto', padding: '2rem', textAlign: 'center', flexDirection: 'column', gap: '1rem', border: 'none' }}>
+          <History size={48} style={{ color: '#FF9500' }} />
           <div>
-            <div style={{ fontWeight: 700, color: 'white' }}>View History</div>
+            <div style={{ fontWeight: 600, fontSize: '1.125rem' }}>View History</div>
             <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Check past records</div>
           </div>
         </Link>

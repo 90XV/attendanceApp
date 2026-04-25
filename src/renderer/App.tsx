@@ -16,13 +16,14 @@ import Dashboard from './pages/Dashboard';
 import StaffManagement from './pages/StaffManagement';
 import AttendanceScanner from './pages/AttendanceScanner';
 import HistoryLogs from './pages/HistoryLogs';
+import SettingsPage from './pages/Settings';
 
 const Sidebar = () => {
   const location = useLocation();
 
   const navItems = [
     { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
-    { path: '/scan', icon: Camera, label: 'Scan Attendace' },
+    { path: '/scan', icon: Camera, label: 'Scan Attendance' },
     { path: '/staff', icon: Users, label: 'Staff Management' },
     { path: '/history', icon: History, label: 'History Logs' },
   ];
@@ -48,16 +49,43 @@ const Sidebar = () => {
       </nav>
 
       <div className="sidebar-footer">
-        <div className="nav-item">
+        <Link to="/settings" className={`nav-item ${location.pathname === '/settings' ? 'active' : ''}`}>
           <Settings size={20} />
           Settings
-        </div>
+        </Link>
       </div>
     </div>
   );
 };
 
 const App = () => {
+  const [theme, setTheme] = useState(localStorage.getItem('attn-theme') || 'system');
+
+  useEffect(() => {
+    localStorage.setItem('attn-theme', theme);
+    
+    const applyTheme = () => {
+      let activeTheme = theme;
+      if (theme === 'system') {
+        activeTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      
+      if (activeTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+    };
+
+    applyTheme();
+
+    if (theme === 'system') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      mediaQuery.addEventListener('change', applyTheme);
+      return () => mediaQuery.removeEventListener('change', applyTheme);
+    }
+  }, [theme]);
+
   return (
     <Router>
       <Sidebar />
@@ -67,6 +95,7 @@ const App = () => {
           <Route path="/staff" element={<StaffManagement />} />
           <Route path="/scan" element={<AttendanceScanner />} />
           <Route path="/history" element={<HistoryLogs />} />
+          <Route path="/settings" element={<SettingsPage theme={theme} setTheme={setTheme} />} />
         </Routes>
       </main>
     </Router>
@@ -74,3 +103,4 @@ const App = () => {
 };
 
 export default App;
+
