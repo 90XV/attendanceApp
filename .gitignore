@@ -24,3 +24,8 @@ release
 *.njsproj
 *.sln
 *.sw?
+
+attendanceApp/
+go.mod
+go.sum
+outputs/
