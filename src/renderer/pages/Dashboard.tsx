@@ -13,8 +13,8 @@ const Dashboard = () => {
   }, []);
 
   const fetchStats = async () => {
-    const teachers = await (window as any).electronAPI.invoke('get-teachers');
-    const logs = await (window as any).electronAPI.invoke('get-logs');
+    const teachers = await window.electronAPI.invoke('get-teachers');
+    const logs = await window.electronAPI.invoke('get-logs');
     
     const today = new Date().toDateString();
     const todayLogs = logs.filter((log: any) => new Date(log.timestamp).toDateString() === today);

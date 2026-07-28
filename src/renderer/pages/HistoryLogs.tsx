@@ -10,7 +10,7 @@ const HistoryLogs = () => {
   }, []);
 
   const fetchLogs = async () => {
-    const data = await (window as any).electronAPI.invoke('get-logs');
+    const data = await window.electronAPI.invoke('get-logs');
     setLogs(data);
   };
 

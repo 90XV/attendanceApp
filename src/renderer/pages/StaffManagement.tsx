@@ -22,7 +22,7 @@ const StaffManagement = () => {
   }, []);
 
   const fetchTeachers = async () => {
-    const data = await (window as any).electronAPI.invoke('get-teachers');
+    const data = await window.electronAPI.invoke('get-teachers');
     setTeachers(data);
   };
 
@@ -48,7 +48,7 @@ const StaffManagement = () => {
     
     try {
       if (editingTeacher) {
-        await (window as any).electronAPI.invoke('update-teacher', editingTeacher.id, formData);
+        await window.electronAPI.invoke('update-teacher', editingTeacher.id, formData);
       } else {
         const qrData = JSON.stringify({
           firstName: formData.firstName,
@@ -58,7 +58,7 @@ const StaffManagement = () => {
         });
         const encryptedData = CryptoJS.AES.encrypt(qrData, ENCRYPTION_KEY).toString();
         
-        await (window as any).electronAPI.invoke('add-teacher', {
+        await window.electronAPI.invoke('add-teacher', {
           ...formData,
           qrCode: encryptedData
         });
@@ -74,7 +74,7 @@ const StaffManagement = () => {
 
   const handleDelete = async (id: number) => {
     if (confirm('Are you sure you want to delete this teacher? This will also delete their logs.')) {
-      await (window as any).electronAPI.invoke('delete-teacher', id);
+      await window.electronAPI.invoke('delete-teacher', id);
       fetchTeachers();
     }
   };

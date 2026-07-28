@@ -36,13 +36,28 @@ const AttendanceScanner = () => {
     if (now - lastScanTime < 5000) return;
 
     try {
-      const bytes = CryptoJS.AES.decrypt(decodedText, ENCRYPTION_KEY);
-      const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-      
-      const teacher = await (window as any).electronAPI.invoke('get-teacher-by-qr', decodedText);
-      
+      // First try directly matching teacher by QR code in database
+      let teacher = await window.electronAPI.invoke('get-teacher-by-qr', decodedText);
+
+      // If not found directly, attempt AES decryption
+      if (!teacher) {
+        try {
+          const bytes = CryptoJS.AES.decrypt(decodedText, ENCRYPTION_KEY);
+          const decryptedStr = bytes.toString(CryptoJS.enc.Utf8);
+          if (decryptedStr) {
+            const decryptedData = JSON.parse(decryptedStr);
+            const allTeachers = await window.electronAPI.invoke('get-teachers');
+            teacher = allTeachers.find((t: any) => 
+              t.nickname === decryptedData.nickname && t.firstName === decryptedData.firstName
+            );
+          }
+        } catch (decryptErr) {
+          console.warn("Decryption attempt failed:", decryptErr);
+        }
+      }
+
       if (teacher) {
-        await (window as any).electronAPI.invoke('add-log', teacher.id, sessionType);
+        await window.electronAPI.invoke('add-log', teacher.id, sessionType);
         setScanResult({
           name: `${teacher.firstName} ${teacher.lastName}`,
           nickname: teacher.nickname,
@@ -54,8 +69,9 @@ const AttendanceScanner = () => {
       } else {
         setError("Invalid QR Code: Teacher not found in database.");
       }
-    } catch (err) {
-      setError("Failed to decrypt QR code. It might be invalid or corrupted.");
+    } catch (err: any) {
+      console.error("Scan error:", err);
+      setError("Failed to process scan: " + (err.message || "Unknown error"));
     }
   };
 
